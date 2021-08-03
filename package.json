@@ -1,6 +1,9 @@
 {
   "dependencies": {
     "express": "^4.17.1",
-    "pdf-to-printer": "^2.0.6"
+    "pdf-to-printer": "^2.0.6",
+    "qrcode": "^1.4.4",
+    "qrcode-generator": "^1.4.4",
+    "socket.io": "^4.1.3"
   }
 }

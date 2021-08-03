@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html style="text-align: center;font-size: x-large;">
+<head>
+	<meta charset="utf-8">
+	<title>KEDOKI</title>
+</head>
+<body>
+	<h1 id="kiosk_name"></h1>
+	<div>
+		<img id="qrcode"></img>
+	</div>
+	<p>
+		<span>Status : </span><span id="messages"></span>
+	</p>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="qrcode.js"></script>
+<script>
+	var socket = io();
+
+	var kiosk_name = document.getElementById('kiosk_name');  
+	var messages = document.getElementById('messages');
+	var qrcode = document.getElementById('qrcode');
+
+  
+	socket.on('kiosk_name', function(msg) {
+		kiosk_name.innerHTML = msg
+	});
+
+	socket.on('status', function(msg) {
+	  messages.innerHTML = msg
+	});
+
+	socket.on('qrcode', function(msg) {
+		qrcode.src = msg
+	});
+
+  </script>
+</html>
