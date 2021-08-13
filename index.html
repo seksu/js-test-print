@@ -5,23 +5,105 @@
 	<title>KEDOKI</title>
 </head>
 <body>
+	<style>
+		#kiosk_name{
+			color: #ff5722;
+			text-decoration: underline;
+		}
+		span{
+			color: #00000099;
+			font-size: 32px;
+		}
+		.title {
+			font-family: verdana;
+			text-indent: 30px;
+			color: #ff5722;
+		}
+		.intruction {
+			font-family: verdana;
+			font-size: 21px;
+			text-align: left;
+			text-indent: 30px;
+			margin: 0;
+			color: #00000099;
+			line-height: 2;
+		}
+		.page {
+			display: table;
+			width: 100%;
+			margin-bottom: 40px;
+		}
+		.text {
+			display: table-cell;
+			vertical-align: middle;
+			width: 60%;
+		}
+		.qrcode {
+			display: table-cell;
+			vertical-align: middle;
+			width: 40%;
+		}
+		#con-qr {
+			height: 200px;
+		}
+
+		#qrcode{
+			margin: 0 auto;
+		}
+		button {
+			font-size: 30px;
+			padding: 20px 60px;
+			border-radius: 6px;
+			background-color: #ff5722 !important;
+    		border-color: #ff5722 !important;
+			color: white;
+		}
+		.contact {
+			margin-top: 50px;
+		}
+	</style>
 	<h1 id="kiosk_name"></h1>
-	<div>
-		<img id="qrcode"></img>
+	<div class="page">
+		<div class="text">
+			<h3 class="title">ขั้นตอนการใช้งาน</h3>
+			<p class="intruction">1. โปรด login เว็บไซต์ edoc.opencloudai.com ด้วยมือถือของท่าน</p>
+			<p class="intruction">2. เลือกที่เมนู "คำร้องขอเอกสาร" และ เลือกเอกสารที่ขอพิมพ์ผ่าน KEDOKI</p>
+			<p class="intruction">3. เลือกที่ปุ่ม "PRINT @ KEDOKI" เพื่อเปิดกล้อง</p>
+			<p class="intruction">4. กดที่ปุ่ม "Scan QR-Code" บนหน้าจอ KEDOKI</p>
+			<p class="intruction">5. นำโทรศัพท์มือถือของท่านมาสแกน QR-Code บนหน้าจอตู้ KEDOKI</p>
+			<p class="intruction">6. กดปุ่ม "OK" บนหน้าจอมือถือของท่านเพื่อเริ่มพิมพ์เอกสาร</p>
+			<p class="intruction">7. กดปุ่ม "Success" บนหน้าจอ KEDOKI เพื่อสิ้นสุดการพิมพ์เอกสาร</p>
+		</div>
+		<div class="qrcode">
+			<div id="con-qr">
+				<img id="qrcode" style="display: none;"></img>
+			</div>
+			<p>
+				<span>Status : </span><span id="messages"></span>
+			</p>
+		</div>
 	</div>
-	<p>
-		<span>Status : </span><span id="messages"></span>
-	</p>
+	<div>
+		<button id="button" onclick="clicked()">Scan QR-Code</button>
+	</div>
+	<div class="contact">
+		<p class="intruction">หากพบปัญหาในการใช้งานกรุณาติดต่อ registrar@kmitl.ac.th</p>
+	</div>
+	
+
+	
+	
 </body>
 <script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript" src="qrcode.js"></script>
 <script>
 	var socket = io();
+	var is_show = false;
 
 	var kiosk_name = document.getElementById('kiosk_name');  
 	var messages = document.getElementById('messages');
 	var qrcode = document.getElementById('qrcode');
-
+	var intId = null;
   
 	socket.on('kiosk_name', function(msg) {
 		kiosk_name.innerHTML = msg
@@ -34,6 +116,21 @@
 	socket.on('qrcode', function(msg) {
 		qrcode.src = msg
 	});
+
+	function clicked(){
+		is_show = !is_show
+		if(is_show){
+			document.getElementById("button").innerHTML = "Success"
+			document.getElementById("qrcode").style.display = "block"
+			intId = setTimeout(function(){
+				clicked()
+			},60000)
+		}else{
+			document.getElementById("button").innerHTML = "Scan QR-Code"
+			document.getElementById("qrcode").style.display = "none"
+			clearTimeout(intId)
+		}
+	}
 
   </script>
 </html>
