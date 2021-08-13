@@ -13,7 +13,7 @@ const QRCode = require('qrcode')
 
 const port = 3000;
 const qrcodeTimeout = 60000;
-const printInterval = 1000
+const printInterval = 10000
 const kiosk_name = "KEDOKI2"
 
 // app.use(express.static('public'))
@@ -59,18 +59,19 @@ setInterval(function(){
             genQr()
             io.emit('status', "Ready");
             qrInterval = setInterval(genQr,qrcodeTimeout)
-          },5000)
-          // console.log(data["document_url"]);
-          // var request = https.get(data["document_url"], function(response) {
-          // var file = fs.createWriteStream("tempfile");
-          //   response.pipe(file);
-          //   ptp
-          //   .getPrinters()
-          //   .then(console.log)
-          //   .catch(console.error);
+          },60000)
 
-          //   ptp.print('tempfile', {printer: "EPSON_L3150_Series_2"});
-          // });
+          console.log("https://edoc.opencloudai.com"+data["document_url"]);
+          var request = https.get("https://edoc.opencloudai.com"+data["document_url"], function(response) {
+          var file = fs.createWriteStream("tempfile");
+             response.pipe(file);
+             ptp
+             .getPrinters()
+             .then(console.log)
+             .catch(console.error);
+
+             ptp.print('tempfile', {printer: 'FUJI XEROX DocuPrint CP315/318 dw (2)'});
+          });
         }
       });
     })
