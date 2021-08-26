@@ -70,7 +70,7 @@ setInterval(function(){
              .then(console.log)
              .catch(console.error);
 
-             ptp.print('tempfile.pdf', {printer: 'FUJI XEROX DocuPrint CP315/318 dw (2)'});
+             ptp.print('tempfile.pdf', {printer: 'FUJI_XEROX_DocuPrint_CP315/318_dw_2'});
           });
         }
       });
