@@ -67,10 +67,23 @@ setInterval(function(){
              response.pipe(file);
              ptp
              .getPrinters()
-             .then(console.log)
+             //.then(console.log)
              .catch(console.error);
 
-             ptp.print('tempfile.pdf', {printer: 'FUJI_XEROX_DocuPrint_CP315/318_dw_2'});
+              const { exec } = require("child_process");
+
+              exec("node_modules/pdf-to-printer/dist/SumatraPDF.exe -print-to FUJI_XEROX_DocuPrint_CP315/318_dw_2 tempfile.pdf", (error, stdout, stderr) => {
+                  if (error) {
+                      console.log(`error: ${error.message}`);
+                      return;
+                  }
+                  if (stderr) {
+                      console.log(`stderr: ${stderr}`);
+                      return;
+                  }
+                  console.log(`stdout: ${stdout}`);
+              });
+             //ptp.print('tempfile.pdf', {printer: 'FUJI_XEROX_DocuPrint_CP315/318_dw_2'});
           });
         }
       });
