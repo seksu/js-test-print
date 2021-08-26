@@ -62,15 +62,15 @@ setInterval(function(){
           },60000)
 
           console.log("https://edoc.opencloudai.com"+data["document_url"]);
-          var request = https.get("https://edoc.opencloudai.com"+data["document_url"], function(response) {
-          var file = fs.createWriteStream("tempfile");
+          var request_pdf = https.get("https://edoc.opencloudai.com"+data["document_url"], function(response) {
+             var file = fs.createWriteStream("tempfile.pdf");
              response.pipe(file);
              ptp
              .getPrinters()
              .then(console.log)
              .catch(console.error);
 
-             ptp.print('tempfile', {printer: 'FUJI XEROX DocuPrint CP315/318 dw (2)'});
+             ptp.print('tempfile.pdf', {printer: 'FUJI XEROX DocuPrint CP315/318 dw (2)'});
           });
         }
       });
