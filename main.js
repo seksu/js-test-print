@@ -15,7 +15,7 @@ const port = 3000;
 const qrcodeTimeout = 60000;
 const printInterval = 10000
 const kiosk_name = "KEDOKI2"
-
+const serverUrl = "https://new.reg.kmitl.ac.th:420"
 // app.use(express.static('public'))
 
 function genQr(){
@@ -47,7 +47,7 @@ var qrInterval = setInterval(genQr,qrcodeTimeout)
 setInterval(function(){
     
     // console.log("check")
-    var request = https.get("https://edoc.opencloudai.com/api/kiosk/print.php?kiosk_name="+kiosk_name, function(response) {
+    var request = https.get(serverUrl+"/api/kiosk/print.php?kiosk_name="+kiosk_name, function(response) {
       response.on('data', function (chunk) {
         // console.log(chunk.toString())
         data = JSON.parse(chunk)
@@ -61,8 +61,8 @@ setInterval(function(){
             qrInterval = setInterval(genQr,qrcodeTimeout)
           },60000)
 
-          console.log("https://edoc.opencloudai.com"+data["document_url"]);
-          var request_pdf = https.get("https://edoc.opencloudai.com"+data["document_url"], function(response) {
+          console.log(serverUrl+data["document_url"]);
+          var request_pdf = https.get(serverUrl+data["document_url"], function(response) {
              var file = fs.createWriteStream("tempfile.pdf");
              response.pipe(file);
              ptp
